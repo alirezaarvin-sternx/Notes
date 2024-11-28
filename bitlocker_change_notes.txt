@@ -1,5 +1,5 @@
 bitlocker changes:
-1. add ownership and passphrase to bitlocker status model ownerShip: ENUM['trio', 'user'], passPhrase: str.
+1. add ownership and passphrase to bitlocker status model ownerShip: ENUM['trio', 'user'] nullable, passPhrase: str.
 2. add a table for bitlocker status.
 3. auto gen the min passphrase.
 4. check the ownership of bitlocker enabled on each drive.
