@@ -1,9 +1,10 @@
 bitlocker changes:
 1. add ownership and passphrase to bitlocker status model ownerShip: ENUM['trio', 'user'] nullable, passPhrase: str.   # Done
-2. add a table for bitlocker status.  # Done
+2. add a table for bitlocker status data.  # Done
 3. auto gen the min passphrase.    # Done
 4. check the ownership of bitlocker enabled on each drive.
 5. add a restriction thread(monitoring) for bitlocker profile.
 6. update models.    # Done
 7. add a flag to command endpoint object for setting or profile. actionType: ENUM['setting', 'profile'].    # Done
-8. add data access layers for bitlocker db table.
+8. add data access layers for bitlocker status data db table.
+9. add a table for bitlocker command.
