@@ -1,0 +1,78 @@
+#BitLocker Endpoint Objects:
+
+
+##TPM chip Status Data: (I publish this data to Back-End)
+
+{
+	specVersion:(float),
+    manufacturerId:(STR),
+	manufacturerName:(STR),
+    chipSupport:(bool),
+	biosActivation:(bool)
+}
+* Single object.
+
+Notes:
+
+specVersion: must be higher than 1.2
+chipSupport: must be true
+biosActivation: must be true
+
+***if these conditions are not `met`, then we dont have BitLocker services for that device and BitLocker setting and profile for that device are disabled. 
+
+
+##BitLocker Status Data: (I publish this data to Back-End)
+
+{
+	drives :[
+				{
+					driveLetter(STR): {
+					driveType:ENUM["OS Drive", "Fixed Drive", "Removable Drive"],
+					bitlockerStatus:ENUM ["BitLocker Disabled", "BitLocker Enabled", "BitLocker Encryption in Progress", "BitLocker Decryption in Progress", "Bitlocker Encryption Paused", "Bitlocker Decryption Paused"],
+                    conversionPercentage:(int),
+                    bitlockerIdentifier:(STR, Nullable),
+                    bitlockerRecoveryKey:(STR, Nullable),
+					passPhrase:(STR, Nullable),
+					ownerhip:ENUM["trio", "user"] 
+					}
+				},
+			]
+}
+* List of objects.
+
+Notes:
+driveLetter Examples: "C:", "D:", "E:", "F:"
+driveType ENUM: "OS Drive", "Fixed Drive", "Removable Drive"
+bitlockerStatus ENUM: "BitLocker Disabled", "BitLocker Enabled", "BitLocker Encryption in Progress", "BitLocker Decryption in Progress", "Bitlocker Encryption Paused", "Bitlocker Decryption Paused"
+ownerhip ENUM: "trio" means it is not interfered by user. "user" means BitLocker was changed by user on device.
+
+##BitLocker Setting Object: (I subscribe to this data from Back-End)
+
+{	
+	[
+		{
+			activationCommand:(bool),
+			passPhrase:(STR,Nullable),
+			driveLetter:(STR)
+		},
+	]
+}
+* List of objects.
+
+Notes:
+activationCommand: True or False
+	- True: means enabling the BitLocker on said drive.
+	- False: means disableing the BitLocker on said drive.
+passPhrase: if the actionType is setting, I get the password from pannel. if the actionType is profile, i auto generate the password myself.
+driveLetter Examples: "C:", "D:", "E:", "F:"
+
+
+##BitLocker Profile Object:(I subscribe to this data on profile object from Back-End)
+
+bitlocker:{
+	activationCommand:bool
+}
+
+if the command is in profile: 
+True: means BitLocker will be enabled on all drives.
+False: means BitLocker will be disabled on all drives.
